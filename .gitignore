@@ -1,0 +1,13 @@
+/build/
+/.vs/
+*.pdb
+*.obj
+*.ilk
+*.log
+*.user
+/audit-results/
+NostaleX.exe
+NostaleX.dat
+/Config.ini
+*.dmp
+/.env*

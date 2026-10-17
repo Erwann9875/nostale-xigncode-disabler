@@ -1,0 +1,27 @@
+RELEASE VALIDATION - 2026-10-17
+
+Build: Windows x64 launcher, MSVC 14.50, CMake 4.2, Release, static C++ runtime.
+Supported game targets remain the exact 32-bit clients listed in the README.
+Compiler warnings are treated as errors.
+
+Completed checks:
+- Release build succeeded.
+- Focused argument and loopback guard checks: 1/1 CTest passed.
+- --help returned success.
+- Unknown arguments were rejected with Windows error 87.
+- A verified client with a remote Config.ini endpoint was rejected (1610).
+- A verified client with no Config.ini was rejected (2).
+- A same-size, modified client was rejected by its fingerprint (1306).
+- Original and valid fixture executables retained their original SHA-256 hashes.
+- Release imports only ADVAPI32, bcrypt, SHELL32, USER32 and KERNEL32.
+  No extra project DLL, .NET runtime or Visual C++ runtime DLL is required.
+
+Limits:
+The verified loopback client required Administrator rights (Windows error 740).
+The suspended-memory check was therefore NOT completed in this environment.
+No game process was resumed and no login or gameplay test was performed.
+Run the README's suspended-only check from an Administrator terminal before
+using the launcher with a supported local development client.
+
+Release EXE SHA-256:
+A9CBAB80E6E3C9A7FBDEE29EA9A7765D9DACD555E9875B9548B902CAE82ECDBF

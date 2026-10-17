@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "layout": "hk-0.9.3.3257",
+  "file_version": "0.9.3.3257",
+  "disk_size": 3681648,
+  "preferred_base": 4194304,
+  "executable_names": ["NostaleX.dat", "NostaleX.exe"],
+  "profiles": [
+    {
+      "id": "hk-original",
+      "sha256": "537ABBCBED3661AB7CA9989B0C0274DA65DAC662F2049D0171503A82216E764B"
+    },
+    {
+      "id": "nostalestory-3257",
+      "sha256": "C46116A3D1618E9DB6085BCA4A3B8BA4C71E38D5A3071A1A6B5AD9CEA52B096B"
+    }
+  ]
+}

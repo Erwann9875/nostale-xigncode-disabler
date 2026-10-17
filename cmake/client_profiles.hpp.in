@@ -1,0 +1,37 @@
+#pragma once
+
+// Generated from the reviewed, source-only contracts/client-profiles.json.
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <string_view>
+
+namespace nostale::hk::contracts {
+
+struct client_profile final {
+    std::string_view id;
+    std::string_view sha256_hex;
+    std::array<std::byte, 32> sha256;
+};
+
+inline constexpr std::array supported_clients{
+@profile_entries@};
+inline constexpr std::string_view client_layout = "@profile_layout@";
+inline constexpr std::wstring_view executable_name = L"@profile_name@";
+inline constexpr std::wstring_view alternate_executable_name = L"@profile_alternate_name@";
+inline constexpr std::string_view file_version = "@profile_file_version@";
+inline constexpr std::uint64_t disk_size = @profile_disk_size@ULL;
+inline constexpr std::uint32_t preferred_base = @profile_preferred_base@U;
+
+[[nodiscard]] constexpr const client_profile* profile_for_hash(
+    const std::array<std::byte, 32>& hash) noexcept {
+    for (const auto& profile : supported_clients) {
+        if (profile.sha256 == hash) return &profile;
+    }
+    return nullptr;
+}
+
+// Baseline reference for historical audit tooling, NOT the acceptance policy.
+inline constexpr std::string_view sha256_hex = supported_clients.front().sha256_hex;
+
+} // namespace nostale::hk::contracts
