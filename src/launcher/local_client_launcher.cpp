@@ -47,14 +47,15 @@ DWORD verify_client_file(HANDLE file) noexcept {
     return contracts::profile_for_hash(hash) != nullptr ? ERROR_SUCCESS : ERROR_REVISION_MISMATCH;
 }
 
-bool read_local_endpoint(const std::wstring& ini) noexcept {
-    std::array<wchar_t, 64> ip{}, port{};
+bool read_configured_endpoint(const std::wstring& ini) noexcept {
+    std::array<wchar_t, 256> ip{};
+    std::array<wchar_t, 64> port{};
     const DWORD ip_length = ::GetPrivateProfileStringW(L"NosTale_Network", L"IP", L"",
         ip.data(), static_cast<DWORD>(ip.size()), ini.c_str());
     const DWORD port_length = ::GetPrivateProfileStringW(L"NosTale_Network", L"Port", L"",
         port.data(), static_cast<DWORD>(port.size()), ini.c_str());
     if (ip_length == ip.size() - 1 || port_length == port.size() - 1) return false;
-    return is_local_login_endpoint({ip.data(), ip_length}, {port.data(), port_length});
+    return is_configured_login_endpoint({ip.data(), ip_length}, {port.data(), port_length});
 }
 
 bool is_elevated() noexcept {
@@ -105,11 +106,11 @@ DWORD launch(const launch_options& options, const wchar_t*& stage, DWORD& child_
     DWORD error = verify_client_file(file.get());
     if (error != ERROR_SUCCESS) return error;
 
-    stage = L"loopback Config.ini (127.0.0.1 and an explicit valid login port required)";
+    stage = L"Config.ini login endpoint (explicit IP/hostname and valid port required)";
     platform::unique_handle config(::CreateFileW(ini.c_str(), GENERIC_READ, FILE_SHARE_READ,
         nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr));
     if (!config) return ::GetLastError();
-    if (!read_local_endpoint(ini)) return ERROR_BAD_CONFIGURATION;
+    if (!read_configured_endpoint(ini)) return ERROR_BAD_CONFIGURATION;
 
     std::wstring command = L"\"" + executable.native() + L"\" EntwellNostaleClientLoadFromIni";
     STARTUPINFOW startup{};
@@ -173,7 +174,7 @@ int run_local_client_launcher(int argc, wchar_t** argv) {
         error = ERROR_PATH_NOT_FOUND;
     }
     if (error != ERROR_SUCCESS) {
-        const std::wstring message = std::wstring(L"Local client launch failed at ") + stage +
+        const std::wstring message = std::wstring(L"Client launch failed at ") + stage +
             L". Windows error: " + std::to_wstring(error) + L". Startup was aborted.";
         std::fwprintf(stderr, L"%ls\n", message.c_str());
         if (!options->validate_only) ::MessageBoxW(nullptr, message.c_str(), L"NosTale Xigncode3 launcher", MB_OK | MB_ICONERROR);

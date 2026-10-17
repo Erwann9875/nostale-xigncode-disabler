@@ -20,9 +20,11 @@ std::optional<launch_options> parse_launch_options(std::span<const std::wstring_
     return result;
 }
 
-bool is_local_login_endpoint(std::wstring_view ip, std::wstring_view port) noexcept {
-    // No hostname resolution, implicit port, public endpoint or compiled-default fallback.
-    if (ip != L"127.0.0.1" || port.empty() || port.size() > 5) return false;
+bool is_configured_login_endpoint(std::wstring_view host, std::wstring_view port) noexcept {
+    // Any explicit IP/hostname is allowed. Keep malformed or missing settings rejected.
+    // The client handles address resolution; the launcher does not connect here.
+    if (host.empty() || host.size() >= 255 || host.find_first_of(L" \t\r\n") != std::wstring_view::npos ||
+        port.empty() || port.size() > 5) return false;
     std::uint32_t value = 0;
     for (const wchar_t digit : port) {
         if (digit < L'0' || digit > L'9') return false;

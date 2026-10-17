@@ -10,11 +10,12 @@ int wmain(int argc, wchar_t** argv) {
     try {
         if (argc == 1) return nostale::hk::launcher::run_adjacent_client_launcher();
         if (argc == 2 && (std::wstring_view(argv[1]) == L"--help" || std::wstring_view(argv[1]) == L"-h")) {
-            std::puts("NosTale Xigncode3 local-development launcher\n"
+            std::puts("NosTale Xigncode3 launcher\n"
                 "Usage: Nostale-Xigncode-Disabler.exe --launch-client <absolute NostaleX.dat/.exe path> "
                 "--disable-xigncode3 [--validate-only]\n"
                 "Without arguments: place beside the supported client and double-click.\n"
-                "Only supported client fingerprints and 127.0.0.1 endpoints are accepted.\n"
+                "Only supported client fingerprints are accepted; any configured IP/hostname is allowed.\n"
+                "Config.ini must specify a login endpoint and valid port. Use only with permission.\n"
                 "No game files, services or drivers are changed.");
             return ERROR_SUCCESS;
         }

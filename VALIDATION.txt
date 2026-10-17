@@ -6,10 +6,13 @@ Compiler warnings are treated as errors.
 
 Completed checks:
 - Release build succeeded.
-- Focused argument and loopback guard checks: 1/1 CTest passed.
+- Focused argument and endpoint checks: 1/1 CTest passed.
+- Loopback, LAN/public-address settings and hostnames are accepted by validation.
+- Missing/whitespace addresses and invalid login ports are rejected.
 - --help returned success.
 - Unknown arguments were rejected with Windows error 87.
-- A verified client with a remote Config.ini endpoint was rejected (1610).
+- A verified client with a remote Config.ini endpoint passed address validation
+  and reached client creation (Windows then required Administrator rights: 740).
 - A verified client with no Config.ini was rejected (2).
 - A same-size, modified client was rejected by its fingerprint (1306).
 - Original and valid fixture executables retained their original SHA-256 hashes.
@@ -17,11 +20,12 @@ Completed checks:
   No extra project DLL, .NET runtime or Visual C++ runtime DLL is required.
 
 Limits:
-The verified loopback client required Administrator rights (Windows error 740).
+Both verified remote and loopback configurations required Administrator rights
+at client creation (Windows error 740).
 The suspended-memory check was therefore NOT completed in this environment.
 No game process was resumed and no login or gameplay test was performed.
 Run the README's suspended-only check from an Administrator terminal before
-using the launcher with a supported local development client.
+using the launcher with a supported client and a server where you have permission.
 
 Release EXE SHA-256:
-A9CBAB80E6E3C9A7FBDEE29EA9A7765D9DACD555E9875B9548B902CAE82ECDBF
+511798387C186E767497402C75EE3ABC9B7958875F112C7B82E90E2B11B9D1E2
