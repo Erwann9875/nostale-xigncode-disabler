@@ -4,6 +4,13 @@ Standalone Windows launcher that temporarily skips Xigncode3 initialization in a
 newly created, verified client process. No gameplay plugins, packet hooks, SDK
 agent or EWS loader are included.
 
+## Separate read-only diagnostics
+
+For file fingerprints and basic PE-header reports without running the inspected
+file or the launcher, see [Read-only file diagnostics](diagnostics/README.md).
+That tool and its synthetic tests need only Python; they do not include an
+anti-cheat emulator or vendor binaries.
+
 ## Quick start
 
 1. Use a supported client and a server where you have explicit permission to use
