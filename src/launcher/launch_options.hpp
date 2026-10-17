@@ -15,6 +15,5 @@ struct launch_options final {
 
 [[nodiscard]] std::optional<launch_options> parse_launch_options(
     std::span<const std::wstring_view> arguments);
-[[nodiscard]] bool is_configured_login_endpoint(std::wstring_view host, std::wstring_view port) noexcept;
 
 } // namespace nostale::hk::launcher

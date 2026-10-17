@@ -47,17 +47,6 @@ DWORD verify_client_file(HANDLE file) noexcept {
     return contracts::profile_for_hash(hash) != nullptr ? ERROR_SUCCESS : ERROR_REVISION_MISMATCH;
 }
 
-bool read_configured_endpoint(const std::wstring& ini) noexcept {
-    std::array<wchar_t, 256> ip{};
-    std::array<wchar_t, 64> port{};
-    const DWORD ip_length = ::GetPrivateProfileStringW(L"NosTale_Network", L"IP", L"",
-        ip.data(), static_cast<DWORD>(ip.size()), ini.c_str());
-    const DWORD port_length = ::GetPrivateProfileStringW(L"NosTale_Network", L"Port", L"",
-        port.data(), static_cast<DWORD>(port.size()), ini.c_str());
-    if (ip_length == ip.size() - 1 || port_length == port.size() - 1) return false;
-    return is_configured_login_endpoint({ip.data(), ip_length}, {port.data(), port_length});
-}
-
 bool is_elevated() noexcept {
     HANDLE raw_token = nullptr;
     if (!::OpenProcessToken(::GetCurrentProcess(), TOKEN_QUERY, &raw_token)) return true;
@@ -96,7 +85,6 @@ DWORD launch(const launch_options& options, const wchar_t*& stage, DWORD& child_
     const auto executable = std::filesystem::canonical(requested);
     if (!contracts::is_supported_executable_name(executable.filename().native())) return ERROR_INVALID_NAME;
     const auto directory = executable.parent_path();
-    const auto ini = (directory / L"Config.ini").native();
 
     // Deny concurrent replacement/writes while verifying and preparing the child.
     stage = L"client fingerprint";
@@ -106,12 +94,7 @@ DWORD launch(const launch_options& options, const wchar_t*& stage, DWORD& child_
     DWORD error = verify_client_file(file.get());
     if (error != ERROR_SUCCESS) return error;
 
-    stage = L"Config.ini login endpoint (explicit IP/hostname and valid port required)";
-    platform::unique_handle config(::CreateFileW(ini.c_str(), GENERIC_READ, FILE_SHARE_READ,
-        nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr));
-    if (!config) return ::GetLastError();
-    if (!read_configured_endpoint(ini)) return ERROR_BAD_CONFIGURATION;
-
+    // Leave all network settings and their interpretation to the client.
     std::wstring command = L"\"" + executable.native() + L"\" EntwellNostaleClientLoadFromIni";
     STARTUPINFOW startup{};
     startup.cb = sizeof(startup);

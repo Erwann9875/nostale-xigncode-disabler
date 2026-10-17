@@ -6,26 +6,26 @@ Compiler warnings are treated as errors.
 
 Completed checks:
 - Release build succeeded.
-- Focused argument and endpoint checks: 1/1 CTest passed.
-- Loopback, LAN/public-address settings and hostnames are accepted by validation.
-- Missing/whitespace addresses and invalid login ports are rejected.
+- Focused launcher argument checks: 1/1 CTest passed.
+- Network settings are not read, validated, filtered or rewritten by the launcher.
 - --help returned success.
 - Unknown arguments were rejected with Windows error 87.
-- A verified client with a remote Config.ini endpoint passed address validation
-  and reached client creation (Windows then required Administrator rights: 740).
-- A verified client with no Config.ini was rejected (2).
+- Verified-client fixtures with remote, loopback, empty and unrestricted settings,
+  including port 70000, all reached client creation without endpoint rejection.
+- A verified client with no Config.ini also reached client creation.
+- Windows required Administrator rights at client creation in each case (740).
 - A same-size, modified client was rejected by its fingerprint (1306).
 - Original and valid fixture executables retained their original SHA-256 hashes.
 - Release imports only ADVAPI32, bcrypt, SHELL32, USER32 and KERNEL32.
   No extra project DLL, .NET runtime or Visual C++ runtime DLL is required.
 
 Limits:
-Both verified remote and loopback configurations required Administrator rights
-at client creation (Windows error 740).
+All verified-client launch fixtures required Administrator rights at client
+creation (Windows error 740).
 The suspended-memory check was therefore NOT completed in this environment.
 No game process was resumed and no login or gameplay test was performed.
 Run the README's suspended-only check from an Administrator terminal before
 using the launcher with a supported client and a server where you have permission.
 
 Release EXE SHA-256:
-511798387C186E767497402C75EE3ABC9B7958875F112C7B82E90E2B11B9D1E2
+AD7691D6BF6C3E8EAB9EF79B4746DA520B7805D2E14DE24DA7A9B349D169DB09

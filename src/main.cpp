@@ -14,8 +14,9 @@ int wmain(int argc, wchar_t** argv) {
                 "Usage: Nostale-Xigncode-Disabler.exe --launch-client <absolute NostaleX.dat/.exe path> "
                 "--disable-xigncode3 [--validate-only]\n"
                 "Without arguments: place beside the supported client and double-click.\n"
-                "Only supported client fingerprints are accepted; any configured IP/hostname is allowed.\n"
-                "Config.ini must specify a login endpoint and valid port. Use only with permission.\n"
+                "Only supported client fingerprints are accepted.\n"
+                "No launcher IP/hostname or port restrictions; the client handles network settings.\n"
+                "Use only with permission.\n"
                 "No game files, services or drivers are changed.");
             return ERROR_SUCCESS;
         }

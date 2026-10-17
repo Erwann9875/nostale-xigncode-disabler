@@ -30,7 +30,7 @@ int run_adjacent_client_launcher() {
         L"\n\nYES: temporarily disable Xigncode3 for this launch."
         L"\nNO: leave Xigncode3 unchanged.\nCANCEL: do not launch."
         L"\n\nNo client or Xigncode files are changed or deleted."
-        L"\nConfig.ini must specify your LOGIN server IP/hostname and port."
+        L"\nThe client handles all network settings; the launcher adds no IP/port restrictions."
         L"\nUse only where you have permission.";
     const int choice = ::MessageBoxW(nullptr, message.c_str(), L"NosTale Xigncode3 Disabler",
         MB_YESNOCANCEL | MB_ICONQUESTION | MB_DEFBUTTON3);

@@ -10,7 +10,8 @@ agent or EWS loader are included.
    this tool.
 2. Copy `dist/Nostale-Xigncode-Disabler.exe` beside `NostaleX.dat` or `NostaleX.exe`.
    No additional project DLL is needed. Keep the normal game files intact.
-3. In the client's `Config.ini`, set your actual login server address and port:
+3. Configure your server address and port using the client's normal settings.
+   For clients that use `Config.ini`, an example is:
 
    ```ini
    [NosTale_Network]
@@ -19,9 +20,10 @@ agent or EWS loader are included.
    ```
 
    Replace the example hostname and port with your server's actual settings.
-   Localhost, LAN/public IP addresses and hostnames are allowed; there is no
-   `127.0.0.1`-only restriction. An explicit non-empty address and a numeric port
-   from 1 to 65535 are still required. Do not change unrelated INI settings.
+   The launcher imposes **no IP/hostname or port restrictions**. It does not read,
+   validate, filter or rewrite network settings, and does not require `Config.ini`
+   to exist. The client handles settings, defaults and connections normally.
+   Invalid settings or unreachable servers can still fail in the client or OS.
 4. Double-click the EXE. **Yes** temporarily disables Xigncode3 for that launch,
    **No** leaves it unchanged, and **Cancel** does nothing. The dialog shows the
    selected client; `NostaleX.dat` takes precedence when both filenames exist.
@@ -48,7 +50,7 @@ gameplay. Omit `--disable-xigncode3` to validate unchanged startup instead.
 ## What it does
 
 - Verifies the client size and SHA-256 against `contracts/client-profiles.json`.
-- Reads the configured login address and validates the explicit port.
+- Leaves all network configuration and connection handling to the client.
 - Creates the client suspended and checks its mapped PE layout, original startup
   instructions and not-yet-initialized Xigncode module state.
 - Changes only the initialization call in that new process's memory.
@@ -86,7 +88,7 @@ through Visual Studio Installer. Then double-click `build.cmd`, or run:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 ```
 
-Build with the focused argument and endpoint checks:
+Build with the focused launch-option checks:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1 -Check
@@ -103,11 +105,11 @@ generator as a fallback. Output: `dist/Nostale-Xigncode-Disabler.exe`.
 - `src/launcher/adjacent_client_launcher.cpp`: double-click launch dialog.
 - `src/launcher/local_client_launcher.cpp`: verification, suspended launch and cleanup.
 - `src/launcher/xigncode_startup.cpp` and `.hpp`: process-memory startup change.
-- `src/launcher/launch_options.cpp` and `.hpp`: options and endpoint settings.
+- `src/launcher/launch_options.cpp` and `.hpp`: launcher command-line options.
 - `src/platform/sha256.cpp`: file fingerprinting through Windows BCrypt.
 - `contracts/client-profiles.json`: reviewed client allowlist.
 - `cmake/`: build-time generation of the compiled profiles.
-- `tests/`: focused option and endpoint checks.
+- `tests/`: focused launcher command-line option checks.
 - `VALIDATION.txt`: completed checks and untested release limitations.
 
 ## Misuse disclaimer
